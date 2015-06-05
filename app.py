@@ -11,9 +11,14 @@ from flask.ext.session import Session
 from models import CrushUser as User, Crush, Match, db
 from cas import CASClient
 from dndlookup import lookup
+import redis
+
+redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+redis = redis.from_url(redis_url)
 
 app = Flask(__name__)
 SESSION_TYPE = 'redis'
+SESSION_REDIS = redis
 app.config.from_object(__name__)
 Session(app)
 app.debug = True
