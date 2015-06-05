@@ -21,11 +21,17 @@ SESSION_TYPE = 'redis'
 SESSION_REDIS = redis
 app.config.from_object(__name__)
 Session(app)
-app.debug = True
+
+if os.getenv('DEBUG', False):
+    app.debug = True
+    SERVICE_URL = 'http://localhost:5000/login'
+
+else:
+    SERVICE_URL = 'http://lastchances.herokuapp.com/login'
 
 
 CAS_URL = 'https://login.dartmouth.edu/cas/'
-SERVICE_URL = 'http://localhost:5000/login'
+
 
 @app.before_request
 def before_request():
