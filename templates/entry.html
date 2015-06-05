@@ -1,0 +1,59 @@
+<!doctype>
+<html>
+  <head>
+    <title>Last Chances 2015</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="container">
+      <h1>Last Chances - Crush on</h1>
+      <h4><a href="/matches">View your matches</a></h4>
+      <p>Logged in as {{ user }}. <a href="/logout">Logout</a>.</p>
+
+
+      <p>Your picks are kept private unless you are matched. Matches are done by a
+      computer program.</p>
+
+      <form id="entries-form" method="post">
+        {% if not entries %}
+          {% set entries_count = 5 %}
+        {% else %}
+          {% set entries_count = entries|length %}
+        {% endif %}
+
+        {% for entry in range(entries_count) %}
+        <div class="row">
+          <p class="col-sm-4 col-sm-offset-4">
+            <input id="entry-{{ loop.index0 }}"class="form-control" name="entry"
+              {% if entries %}value="{{ entries[loop.index0] }}"{% endif %}
+              placeholder="Philip J. Hanlon">
+          </p>
+        </div>
+
+        {% if suggestions and suggestions[loop.index0] %}
+        {% set entryid = loop.index0 %}
+        <div class="row">
+          <ul class="col-sm-4 col-sm-offset-4 list-unstyled">
+            {% for suggestion in suggestions[loop.index0] %}
+            <li><a class="suggestion" data-entry={{ entryid }}>{{ suggestion }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </form>
+
+      <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+          <button type="button" id="another" class="btn btn-default">Add another</button>
+          <input id="submit" type="submit" class="btn btn-primary pull-right">
+        </div>
+      </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="/static/entry.js"></script>
+  </body>
+</html>

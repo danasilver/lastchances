@@ -24,24 +24,24 @@ class BaseModel(Model):
     class Meta:
         database = db
 
-class User(BaseModel):
-    email = CharField(primary_key=True)
+class CrushUser(BaseModel):
+    username = CharField(primary_key=True)
     created = DateTimeField(default=datetime.datetime.now)
     updated = DateTimeField()
 
     def save(self, *args, **kwargs):
         self.updated = datetime.datetime.now()
-        return super(User, self).save(*args, **kwargs)
+        return super(CrushUser, self).save(*args, **kwargs)
 
 class Crush(BaseModel):
-    user = ForeignKeyField(User)
+    user = ForeignKeyField(CrushUser)
     crush = CharField()
     created = DateTimeField(default=datetime.datetime.now)
 
 class Match(BaseModel):
-    user_1 = ForeignKeyField(User, related_name='user_1')
-    user_2 = ForeignKeyField(User, related_name='user_2')
+    user_1 = ForeignKeyField(CrushUser, related_name='user_1')
+    user_2 = ForeignKeyField(CrushUser, related_name='user_2')
 
 if __name__ == '__main__':
-    create_model_tables([User, Crush, Match], fail_silently=True)
+    create_model_tables([CrushUser, Crush, Match], fail_silently=True)
 
