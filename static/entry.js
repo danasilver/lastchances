@@ -1,5 +1,5 @@
 (function ($) {
-  var entriesEl = $("#entries-form");
+  var entriesEl = $("#entries-container");
   $("#another").on("click", function () {
     entriesEl.append(
       '<div class="row">' +
@@ -12,9 +12,5 @@
   $(".suggestion").on("click", function () {
     var $this = $(this);
     $("#entry-" + $this.data("entry")).val($this.text());
-  });
-
-  $("#submit").on("click", function (e) {
-    entriesEl.submit();
   });
 })($);

@@ -11,6 +11,7 @@ from flask.ext.session import Session
 from models import CrushUser as User, Crush, Match, db
 from cas import CASClient
 from dndlookup import lookup
+import requests
 import redis
 
 redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
@@ -59,8 +60,14 @@ def entry():
 
     if request.method == 'POST':
         entries = filter(None, request.form.getlist("entry"))
+        captcha = request.form.get('g-recaptcha-response')
 
-        if len(entries) > 5:
+        captcha_r = requests.post('https://www.google.com/recaptcha/api/siteverify',
+                                  data={'secret': '6Lcd-gcTAAAAANlxsT-ptOTxsgRiJKTGTut2VgLk',
+                                        'response': captcha,
+                                        'remoteip': request.remote_addr})
+
+        if not captcha_r.json()['success']:
             return render_template('entry.html', user=user, entries=entries)
 
         if not any(entries):
