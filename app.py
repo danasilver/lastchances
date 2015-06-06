@@ -63,6 +63,10 @@ def entry():
 
     if request.method == 'POST':
         entries = filter(None, request.form.getlist("entry"))
+
+        if len(entries) > 5:
+            return redirect('entry')
+
         captcha = request.form.get('g-recaptcha-response')
 
         captcha_r = requests.post('https://www.google.com/recaptcha/api/siteverify',
