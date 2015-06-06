@@ -57,6 +57,9 @@ def entry():
         return redirect(url_for('index'))
 
     user = session.get('user')
+    u = User.select().where(User.username == user)[0]
+
+    already_entered = Crush.select().where(Crush.user == u)
 
     if request.method == 'POST':
         entries = filter(None, request.form.getlist("entry"))
@@ -68,7 +71,9 @@ def entry():
                                         'remoteip': request.remote_addr})
 
         if not captcha_r.json()['success']:
-            return render_template('entry.html', user=user, entries=entries)
+            return render_template('entry.html', user=user, entries=entries,
+                                    already_entered=already_entered,
+                                    already_entered_count=already_entered.count())
 
         if not any(entries):
             return redirect('entry')
@@ -79,9 +84,10 @@ def entry():
             if entry not in suggestions[i]:
                 return render_template('entry.html', user=user,
                                                      entries=entries,
-                                                     suggestions=suggestions)
+                                                     suggestions=suggestions,
+                                                     already_entered=already_entered,
+                                                     already_entered_count=already_entered.count())
 
-        u = User.select().where(User.username == user)[0]
         for entry in entries:
             exists = Crush.select().where(Crush.user == u, Crush.crush == entry).count()
             if not exists:
@@ -96,7 +102,9 @@ def entry():
 
         return redirect('/matches')
 
-    return render_template('entry.html', user=user)
+    return render_template('entry.html', user=user,
+                            already_entered=already_entered,
+                            already_entered_count=already_entered.count())
 
 @app.route('/matches')
 def matches():

@@ -20,6 +20,18 @@
 
       <p>Made with ❤ by DS '16 and AD '16</p>
 
+      <p>
+        <b>You've crushed on {{ already_entered_count }}
+        {% if already_entered_count == 1 %}person{% else %}people{% endif %}.</b>
+        <a href="#" id="showhide" data-state="show">Show</a>
+      </p>
+
+      <div id="already-entered" class="hidden">
+        {% for crush in already_entered %}
+        <p>{{ crush.crush }}</p>
+        {% endfor %}
+      </div>
+
       <form id="entries-form" method="post">
         {% if not entries %}
           {% set entries_count = 5 %}

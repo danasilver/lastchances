@@ -13,4 +13,19 @@
     var $this = $(this);
     $("#entry-" + $this.data("entry")).val($this.text());
   });
+
+  $("#showhide").on('click', function () {
+    var $this = $(this);
+
+    if ($this.data("state") == "show") {
+      $this.text("Hide");
+      $("#already-entered").removeClass("hidden");
+      $this.data("state", "hide");
+    }
+    else {
+      $this.text("Show");
+      $("#already-entered").addClass("hidden");
+      $this.data("state", "show");
+    }
+  });
 })($);
