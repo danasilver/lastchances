@@ -60,6 +60,9 @@ def entry():
     if request.method == 'POST':
         entries = filter(None, request.form.getlist("entry"))
 
+        if len(entries) > 5:
+            return render_template('entry.html', user=user, entries=entries)
+
         if not any(entries):
             return redirect('entry')
 
