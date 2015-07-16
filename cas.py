@@ -9,7 +9,6 @@ class CASClient:
         self.cas_url = cas_url
         self.service_url = service_url
 
-
     def Authenticate(self, ticket=None, handler=None):
         # If the request contains a login ticket, try to validate it
         if ticket:

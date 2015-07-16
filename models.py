@@ -44,4 +44,3 @@ class Match(BaseModel):
 
 if __name__ == '__main__':
     create_model_tables([CrushUser, Crush, Match], fail_silently=True)
-
